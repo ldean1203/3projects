@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <title>sum</title>
+</head>
+<body  >
+    <div class="center-block">
+        <p>统计工时，需要从周报系统导出excel文件并<font color="red">另存为一下，xls/xlsx格式无所谓，怀疑是WPS格式，所以无法识别</font></p>
+        <p>计算规则：每天9小时按照8.5计算，0小时减8.5</p>
+    </div>
+    <form method=post action={{ url_for(".sumed") }} enctype=multipart/form-data  class="form-inline">
+      <p><input type=file name=file>
+         <input type=submit value=Upload class="btn btn-primary">
+    </form>
+    <div class="center-block">
+        <p class="lead">姓名：{{ uname }}</p>
+    </div>
+      <table class="table  table-striped">
+        <thead>
+            <tr>
+                <th>年</th>
+                <th>月</th>
+                <th>小时</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for t in sumed_list %}
+            <tr>
+                <td>{{ t[0] }}</td>
+                <td>{{ t[1] }}</td>
+                <td>{{ t[2] }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <div>
+        <p>
+            总计：{{ all_cnt }} 小时
+        </p>
+    </div>
+</body>
+</html>
