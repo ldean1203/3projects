@@ -42,7 +42,7 @@ def cal_sum(path):
                 if v6 >= 9:
                     cnt += v6 - 0.5
             elif v7 == 0.0 and v6 == 0.0:
-                cnt -= 8.5
+                cnt += 0.0
             if v7 >= 9:
                 cnt += v7  - 0.5
             else:
