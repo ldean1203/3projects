@@ -34,12 +34,19 @@ def cal_sum(path):
     for i in l:
         cnt = 0
         for j in range(i[0], i[1] + 1):
+            v6 = float(sheet2.cell(j, 6).value)
             v7 = float(sheet2.cell(j, 7).value)
             v8 = float(sheet2.cell(j, 8).value)
-            cnt += v7  - 0.5
-            if v7 == 0.0:
-                cnt -= 8.5
 
+            if v7 == 0.0 and v6 != 0.0:
+                if v6 >= 9:
+                    cnt += v6 - 0.5
+            elif v7 == 0.0 and v6 == 0.0:
+                cnt -= 8.5
+            if v7 >= 9:
+                cnt += v7  - 0.5
+            else:
+                cnt += v7
         all_cnt += round(cnt)
         l2.append((xlrd.xldate_as_tuple(sheet2.cell(i[0] , 1).value, 0)[0], xlrd.xldate_as_tuple(sheet2.cell(i[0] , 1).value, 0)[1], round(cnt)))
 
