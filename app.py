@@ -7,36 +7,31 @@ def cal_sum(path):
     # path = sys.argv[1]
     # workbook = xlrd.open_workbook('/Users/Dean/Desktop/d.xlsx')
     workbook = xlrd.open_workbook(path)
-
     sheet2 = workbook.sheets()[0]
-
     start = 1
-    end = 0
-    start_date = 0
     nrows = sheet2.nrows
     name = sheet2.cell(1, 0).value
-    first_date = xlrd.xldate_as_tuple(sheet2.cell(start , 1).value, 0)[0:2]
+    first_date = xlrd.xldate_as_tuple(sheet2.cell(start, 2).value, 0)[0:2]
 
     l = []
     l2 = []
     all_cnt = 0
     for i in range(2, nrows):
-        if xlrd.xldate_as_tuple(sheet2.cell(i , 1).value, 0)[0:2] != first_date[0:2]:
+        if xlrd.xldate_as_tuple(sheet2.cell(i, 2).value, 0)[0:2] != first_date[0:2]:
             end = i - 1
             l.append((start, end))
             start = i
-            first_date = xlrd.xldate_as_tuple(sheet2.cell(start , 1).value, 0)[0:2]
+            first_date = xlrd.xldate_as_tuple(sheet2.cell(start, 2).value, 0)[0:2]
         if i == nrows - 1:
             end = nrows - 1
             l.append((start, end))
 
-
     for i in l:
         cnt = 0
         for j in range(i[0], i[1] + 1):
-            v6 = float(sheet2.cell(j, 6).value)
-            v7 = float(sheet2.cell(j, 7).value)
-            v8 = float(sheet2.cell(j, 8).value)
+            v6 = float(sheet2.cell(j, 7).value)
+            v7 = float(sheet2.cell(j, 8).value)
+            v8 = float(sheet2.cell(j, 9).value)
 
             if v7 == 0.0 and v6 != 0.0:
                 if v6 >= 9:
@@ -44,12 +39,12 @@ def cal_sum(path):
             elif v7 == 0.0 and v6 == 0.0:
                 cnt += 0.0
             if v7 >= 9:
-                cnt += v7  - 0.5
+                cnt += v7 - 0.5
             else:
                 cnt += v7
         all_cnt += round(cnt)
-        l2.append((xlrd.xldate_as_tuple(sheet2.cell(i[0] , 1).value, 0)[0], xlrd.xldate_as_tuple(sheet2.cell(i[0] , 1).value, 0)[1], round(cnt)))
-
+        l2.append((xlrd.xldate_as_tuple(sheet2.cell(i[0], 2).value, 0)[0],
+                   xlrd.xldate_as_tuple(sheet2.cell(i[0], 2).value, 0)[1], round(cnt)))
     return l2, all_cnt, name
 
 app = Flask(__name__)
@@ -63,8 +58,9 @@ def sum_zb():
     else:
         try:
             sumed_list, all_cnt, uname = cal_sum('1.xlsx')
-        except:
+        except Exception as e:
             open('1.xlsx', "wb").write(open('templates/1.xlsx', "rb").read())
+            print(e)
             return render_template('error.html')
     return render_template('sum_zb.html', sumed_list = sumed_list, all_cnt = all_cnt, uname = uname)
 
@@ -72,7 +68,8 @@ def sum_zb():
 def sumed():
     file = request.files['file']
     if file.filename[-3:] == 'xls' or file.filename[-4:] == 'xlsx' :
-        file.save(os.path.join('/app/3projects', '1.xlsx'))
+        # file.save(os.path.join('/app/3projects', '1.xlsx'))
+        file.save(os.path.join('E:\\My Document\\PycharmProjects\\GitHub\\3projects-master', '1.xlsx'))
     else:
         return render_template('error.html')
     return redirect(url_for('.sum_zb'))
@@ -81,4 +78,3 @@ def sumed():
 if __name__ == '__main__':
     app.debug = True
     app.run(host='0.0.0.0')
-
