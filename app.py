@@ -68,8 +68,8 @@ def sum_zb():
 def sumed():
     file = request.files['file']
     if file.filename[-3:] == 'xls' or file.filename[-4:] == 'xlsx' :
-        # file.save(os.path.join('/app/3projects', '1.xlsx'))
-        file.save(os.path.join('E:\\My Document\\PycharmProjects\\GitHub\\3projects-master', '1.xlsx'))
+        file.save(os.path.join('/Users/dean/GitHub/3projects', '1.xlsx'))
+        # file.save(os.path.join('E:\\My Document\\PycharmProjects\\GitHub\\3projects-master', '1.xlsx'))
     else:
         return render_template('error.html')
     return redirect(url_for('.sum_zb'))
